@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Kappa View</title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-slider.css">
+    <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap-slider.js"></script>
+</head>
+<body>
+<!-- With the twitch embed code, when you click anywhere on the video outside 
+     the video controls, it takes you to twitch. We don't want that so we need
+     to have a div overlay it that blocks clicking. We make it the size of the
+     window but shift it up by the size of the control bar, which I found was
+     about 28 pixels -->
+<div class="block-click">
+</div>
+<!-- Just like above, the source of this iframe is set when the user selects
+     a channel to view. -->
+<iframe frameborder="0" scrolling="no" id="stream"></iframe>
+<!-- I know what you're thinking, and inline styles would scare me too. But the
+     chat window moves via JQuery UI's draggable and resizable, and those
+     manipulate the element with inline styles anyway. So these are just the 
+     default values. -->
+<div id="chat-div" style="  top:10%;
+                            left:0px;
+                            height:80%;
+                            width:400px;
+                            opacity:0.7;">
+    <!-- This is where the twitch chat lives. It has no source because it's
+         set when the user selects a channel -->
+    <iframe frameborder="0" scrolling="no" id="chat"></iframe>
+    <!-- Controls at the top of the chat window -->
+    <div id="controls">
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <!-- Once again, this <a> has no contents because they are set
+                     when the user selects a channel -->
+                <a  class="navbar-brand channel-name" 
+                    id="channel-info"
+                    data-toggle="modal"
+                    data-target="#info"></a>
+                <ul class="nav navbar-nav navbar-left">
+                    <li>
+                        <a data-toggle="modal" data-target="#options">
+                            <span   class="glyphicon glyphicon-cog" 
+                                    aria-hidden="true"
+                                    title="Options"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a  data-toggle="modal"
+                            data-target="#channels"
+                            id="channel-select">
+                            <span   class="glyphicon glyphicon-th" 
+                                    aria-hidden="true"
+                                    title="Channels"></span>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li style="float:right">
+                        <a id="minimize">
+                            <span   class="glyphicon glyphicon-minus"
+                                    aria-hidden="true"></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <!-- There are some problems with the iframe and the resize event where, if 
+         you go to fast, you enter the iframe so the resize cursor tracking
+         can't do it's thing. So this is going to cover the whole div when
+         we're resizing-->
+    <div class="resize-helper"></div>
+</div>
+
+<!-- Stream Menu modal -->
+<div class="modal fade" id="info" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" 
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h1 class="modal-title" id="info-title">
+                    <!-- When the user selects the channel, the image will
+                         get the channel's logo, and the span will get the name
+                         of the channel -->
+                    <img class="logo"><span></span>
+                </h1>
+            </div>
+            <div class="modal-body" id="info-modal-body">
+                <!-- All these spans (and the href of the <a>)are filled in when
+                     the user selects a channel -->
+                <h2 id="stream-title"><span></span></h2>
+                <p id="viewers">Viewers: <span></span></p>
+                <p id="total-views">Total Views: <span></span></p>
+                <p id="followers">Followers: <span></span></p>
+                <a>Go to stream on twitch.tv</a>
+
+                <h2>About <img src="//static-cdn.jtvnw.net/emoticons/v1/25/1.0" title="Kappa" alt="Kappa" class="emote"> (Kappa) View</h2>
+                <div class="alert alert-success" role="alert"><strong>Protip:</strong> move and resize the chat window to your liking. Then go to the settings and change the opacity to a value between 0 and 1 to represent how see-through you want the chat to be. These settings are channel-specific and will be preserved when you close the app or switch to a different channel.</div>
+                <div class="alert alert-success" role="alert"><strong>Protip:</strong> When you click anywhere in the stream other than the controls at the bottom, the video takes you back to twitch.tv. We block you from clicking accidentally and provide a link to the stream on twitch in this menu (up where it says "Go to this stream on twitch.tv"). If you need to click inside the stream for some reason (for instance, if you're changing the stream quality and need to press an option in the menu) you can temporarily turn off the click blocker by hitting that big blue button in the options menu (the gear symbol) that says "Let me click inside the stream".</div>
+                <p>All data is saved via cookies. Clearing your cookies will reset this application. It's highly recommended that you use the <a href="https://chrome.google.com/webstore/detail/betterttv/ajopnjidmegmdimjlfnijceegpefgped?hl=en">Better Twitch TV Chrome extension</a>; it tweeks the interface of the chat window and gives you the awesome BTTV emotes for maximum twitch meme value, like <img src="//cdn.betterttv.net/emote/54fb961b01abde735115de01/1x" title="KKona" alt="KKona" class="emote"> and <img src="//cdn.betterttv.net/emote/55678f9b7239dcf87b80d791/1x" title="FeelsGoodMan" alt="FeelsGoodMan" class="emote">.</p>
+                <p>If you like this, tell your friends. If you don't like it, fork it on github and make it better.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" 
+                        class="btn btn-default"
+                        data-dismiss="modal">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Options modal! -->
+<div class="modal fade" id="options" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Options</h4>
+            </div>
+            <div class="modal-body" id="options-modal-body">
+                <div class="alert alert-success" role="alert"><img src="//static-cdn.jtvnw.net/emoticons/v1/25/1.0" title="Kappa" alt="Kappa" class="emote"> View looks best when Twitch chat is set to "dark mode". Turn it on in the chat settings.</div>
+                <!-- Toggles the click blocker overlaying the stream. -->
+                <button type="button"
+                        class="btn btn-primary btn-lg btn-block"
+                        id="click-block-toggle">
+                    Let me click inside the stream
+                </button>
+                <h2>Chat Options</h2>
+                <form id="chat-options" class="form-inline"> 
+                    <label for="width">width</label>
+                    <input  type="text"
+                            class="form-control"
+                            id="width"
+                            value="400px">
+                    <label for="height">height</label>
+                    <input  type="text" 
+                            class="form-control"
+                            id="height" 
+                            value="80%">
+                    <label for="top">top</label>
+                    <input  type="text" 
+                            class="form-control" 
+                            id="top" 
+                            value="10%">
+                    <label for="left">left</label>
+                    <input  type="text" 
+                            class="form-control" 
+                            id="left" 
+                            value="0px">
+                    <label for="opacity">opacity</label>
+                    <input  id="opacity" 
+                            data-slider-id='opacitySlider'
+                            type="text"
+                            data-slider-min="0"
+                            data-slider-max="1" 
+                            data-slider-step="0.01"
+                            data-slider-value="0.7"/>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" 
+                        class="btn btn-default"
+                        data-dismiss="modal">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="channels" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Channels</h4>
+            </div>
+            <div class="modal-body" id="channels-modal-body">
+                <div class="panel panel-default channel-thumb" id="add-new">
+                    <div class="panel-body">
+                        <button class="btn btn-default">
+                            <span   class="glyphicon glyphicon-plus" 
+                                    aria-hidden="true"></span>
+                        </button>
+                    </div>
+                    <!-- Magic number: Height of generated panel-footers from
+                         putting h4s in them -->
+                    <div class="panel-footer" style="height:59px">
+                        <input type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" 
+                        class="btn btn-default" 
+                        data-dismiss="modal">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="js/main.js"></script>
+</body>
+</html>
