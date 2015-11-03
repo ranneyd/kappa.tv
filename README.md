@@ -1,7 +1,7 @@
 # Kappa view
 A new User Interface for Twitch.tv
 
-![Kripp demo](http://github.com/ranneyd/kappaview/kripp.png)
+![Kripp demo](https://github.com/ranneyd/kappaview/blob/master/kripp.png?raw=true)
 
 I'll keep this brief. Kappa View is a new way to experience Twitch.tv. It makes the stream full screen and has chat on top of it. Chat is draggable, resizable, and see through. Everytime you play with the chat window the data is saved as a cookie so the next time you open the page, your settings are automatically applied. These settings are channel-specific so you can have different settings for different streams.
 
