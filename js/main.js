@@ -83,22 +83,22 @@ $('#opacity').slider()
 		changeChatValue("opacity", $("#opacity").slider("getValue"));
 	});
 
-// Big blue button in the options menu
-$("#click-block-toggle").click(function(){
-	// Turn off blocker
-	if($(this).hasClass("btn-primary")){
-		$(this).removeClass("btn-primary")
-			.addClass("btn-default")
-			.html("Block me from accidentally clicking on the stream");
-		$(".block-click").hide();
-	}
-	else{
-		$(this).removeClass("btn-default")
-			.addClass("btn-primary")
-			.html("Let me click inside the stream");
-		$(".block-click").show();
-	}
-});
+// // Big blue button in the options menu
+// $("#click-block-toggle").click(function(){
+// 	// Turn off blocker
+// 	if($(this).hasClass("btn-primary")){
+// 		$(this).removeClass("btn-primary")
+// 			.addClass("btn-default")
+// 			.html("Block me from accidentally clicking on the stream");
+// 		$(".block-click").hide();
+// 	}
+// 	else{
+// 		$(this).removeClass("btn-default")
+// 			.addClass("btn-primary")
+// 			.html("Let me click inside the stream");
+// 		$(".block-click").show();
+// 	}
+// });
 // roll up the chat window
 $("#minimize").click(function(){
 	var icon = $($(this).find("span")[0]);
@@ -242,7 +242,7 @@ function addChannel(channel){
 							// Set the channel name in all things that have this class
 							$(".channel-name").html(channel);
 							// set both iframes
-							$("#stream").attr("src", "http://www.twitch.tv/"+channel+"/embed");
+							$("#stream").attr("src", "http://player.twitch.tv/?channel="+channel);
 							$("#chat").attr("src", "http://www.twitch.tv/"+channel+"/chat");
 							// Set the global channel variable
 							global_channel = channel;
