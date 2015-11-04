@@ -17,16 +17,14 @@
     <script type="text/javascript" src="js/bootstrap-slider.js"></script>
 </head>
 <body>
-<!-- With the twitch embed code, when you click anywhere on the video outside 
-     the video controls, it takes you to twitch. We don't want that so we need
-     to have a div overlay it that blocks clicking. We make it the size of the
-     window but shift it up by the size of the control bar, which I found was
-     about 28 pixels
-<div class="block-click">
-</div> -->
-<!-- Just like above, the source of this iframe is set when the user selects
+
+<!-- the source of this iframe is set when the user selects
      a channel to view. -->
 <iframe frameborder="0" scrolling="no" id="stream"></iframe>
+<!-- This is for dragging and resizing chat. If you enter the iframe it becomes
+     sad, so this overlays it. -->
+<div class="block-click">
+</div>
 <!-- I know what you're thinking, and inline styles would scare me too. But the
      chat window moves via JQuery UI's draggable and resizable, and those
      manipulate the element with inline styles anyway. So these are just the 

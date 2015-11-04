@@ -12,6 +12,7 @@ $("#channels").modal('show');
 
 // we only need this when we're resizing
 $(".resize-helper").hide();
+$(".block-click").hide();
 
 // Set up the JQuery UI resizable and draggable stuff
 $("#chat-div").resizable({
@@ -27,9 +28,11 @@ $("#chat-div").resizable({
 	},
 	start: function(event, ui){
 		$(".resize-helper").show();
+		$(".block-click").show();
 	},
 	stop: function(event, ui){
 		$(".resize-helper").hide();
+		$(".block-click").hide();
 	}
 }).draggable({
 	drag: function(event, ui){
