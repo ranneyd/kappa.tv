@@ -2,6 +2,10 @@
 <html>
 <head>
     <title>Kappa.tv</title>
+    <meta charset="UTF-8">
+    <meta name="description" content="Kappa.tv: A new way to experience Twitch.tv. Keep track of your favorite channels and overlay chat so you can have the stream fullscreen but not lose chat">
+    <meta name="keywords" content="twitch, Twitch, twitch.tv, cancer, chat, kappa, Kappa, Keepo, PogChamp, FrankerZ">
+    <meta name="author" content='Dustin "RanneyD" Kane'>
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css">
@@ -112,7 +116,7 @@
                 <div class="alert alert-success" role="alert"><strong>Protip:</strong> move and resize the chat window to your liking. Then go to the settings and change the opacity to a value between 0 and 1 to represent how see-through you want the chat to be. These settings are channel-specific and will be preserved when you close the app or switch to a different channel.</div>
                 <div class="alert alert-success" role="alert"><strong>Protip:</strong> When you click anywhere in the stream other than the controls at the bottom, the video takes you back to twitch.tv. We block you from clicking accidentally and provide a link to the stream on twitch in this menu (up where it says "Go to this stream on twitch.tv"). If you need to click inside the stream for some reason (for instance, if you're changing the stream quality and need to press an option in the menu) you can temporarily turn off the click blocker by hitting that big blue button in the options menu (the gear symbol) that says "Let me click inside the stream".</div>
                 <p>All data is saved via cookies. Clearing your cookies will reset this application. It's highly recommended that you use the <a href="https://chrome.google.com/webstore/detail/betterttv/ajopnjidmegmdimjlfnijceegpefgped?hl=en">Better Twitch TV Chrome extension</a>; it tweeks the interface of the chat window and gives you the awesome BTTV emotes for maximum twitch meme value, like <img src="//cdn.betterttv.net/emote/54fb961b01abde735115de01/1x" title="KKona" alt="KKona" class="emote"> and <img src="//cdn.betterttv.net/emote/55678f9b7239dcf87b80d791/1x" title="FeelsGoodMan" alt="FeelsGoodMan" class="emote">.</p>
-                <p>If you like this, tell your friends. If you don't like it, fork it on github and make it better.</p>
+                <p>If you like this, tell your friends. If you don't like it, <a href="https://github.com/ranneyd/kappa.tv">fork it on github and make it better</a>.</p>
             </div>
             <div class="modal-footer">
                 <button type="button" 
@@ -219,6 +223,37 @@
                         class="btn btn-default" 
                         data-dismiss="modal">
                     Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="firsttime" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Welcome to Kappa.tv</h4>
+            </div>
+            <div class="modal-body" id="channels-modal-body">
+                <img class="big-logo" src="logo.png" alt="Kappa.tv Logo">
+                <h1>Welcome to Kappa.tv!</h1>
+                <p>Kappa.tv allows you to view your favorite <a href="http://twitch.tv/">twitch.tv</a> streams full screen with chat over it. Chat is movable, resizable, and see-through. All settings are customizable and channel-specific; you can save all your favorite channels here and have the chat-window position, size, and opacity automatically set for you. Just type in the name of your favorite channel in the channel menu, hit the big + button, then hit the button generated for that channel and enjoy!</p>
+                <p>We are the official Twitch client of Tempo Storm*!</p>
+
+                <p>If you like what you see but want to make it better, please <a href="https://github.com/ranneyd/kappa.tv">fork it on github</a>.</p>
+                <p><small>*Not really. We aren't affiliated with Tempo Storm or <a href="http://twitch.tv/">twitch.tv</a>, nor do we own the Kappa image.</small></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" 
+                        class="btn btn-default" 
+                        data-dismiss="modal">
+                    Got it!
                 </button>
             </div>
         </div>

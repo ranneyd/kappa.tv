@@ -35,6 +35,10 @@ $("#chat-div").resizable({
 	drag: function(event, ui){
 		changeChatValue("top", ui.position.top + "px");
 		changeChatValue("left", ui.position.left + "px");
+
+		// If they move but don't resize, they may be expecting that size
+		changeChatValue("width", ui.size.width + "px");
+		changeChatValue("height", ui.size.height + "px");
 	}
 // Let's throw in a "make it completely opaque when hovered on" action
 }).hover(function(){
@@ -50,6 +54,10 @@ $('#opacity').slider({
 	}
 });
 
+if(!getCookie("firsttime")){
+	document.cookie="firsttime=beenhere"
+	$("#firsttime").modal("show");
+}
 
 /*************************events*****************************/
 
@@ -158,22 +166,12 @@ function changeChatValue(type, val){
 }
 // Set chat window styles from cookies for "channel"
 function setFromCookie(channel){
-	var cookieValue = document.cookie;
-	var matchCookie = function(prop){
-		// Cookies are of the form "channeltype=value". This matches that
-		// The cookies are in one giant string so we match previous cookies
-		// with "^.*". Then we get channel+prop=, while checking for spaces on
-		// either side of the = just in case. Then we get every character that
-		// isn't a semicolon; this is the value of the cookie. After that we 
-		// match either a ; followed by more cookies (.*) or the end of the 
-		// string "$"
-		return new RegExp("^.*"+channel+prop+"\s*=\s*([^;]*)(;.*$|$)", "i");
-	}
-	var width = cookieValue.replace(matchCookie("width"), "$1");
-	var height = cookieValue.replace(matchCookie("height"), "$1");
-	var top = cookieValue.replace(matchCookie("top"), "$1");
-	var left = cookieValue.replace(matchCookie("left"), "$1");
-	var opacity = cookieValue.replace(matchCookie("opacity"), "$1");
+
+	var width = getCookie(channel+"width");
+	var height = getCookie(channel+"height");
+	var top = getCookie(channel+"top");
+	var left = getCookie(channel+"left");
+	var opacity = getCookie(channel+"opacity");
 	if(width)
 		$("#chat-div").css("width", width);
 	if(height)
@@ -270,17 +268,28 @@ function addChannel(channel){
 function resetChannels(){
 	// Remove all the channel thumbnails, because they're probably all wrong
 	$(".actual-channel-thumb").remove();
-	var cookieValue = document.cookie;
 	// The channel cookie is of the form channels=channel1-channel2-channel3; 
-	// The comment about the other regex above gives some info about this
-	var channelString = cookieValue.replace(/^.*channels\s*=\s*([^;]*)(;.*$|$)/,"$1");
+	var cookie = getCookie("channels");
 	// If we have a channel cookie set,
-	if(channelString !== cookieValue){
+	if(cookie){
 		// This gives us an array of channels from the cookie
-		channels = channelString.split("-");
+		channels = cookie.split("-");
 		// Call our helper function for each one
 		for(var i in channels){
 			addChannel(channels[i]);
 		}
 	}
+}
+function getCookie(cookieName){
+	var cookiestring = document.cookie;
+	// Cookies are of the form "name=value". This matches that
+	// The cookies are in one giant string so we match previous cookies
+	// with "^.*". Then we get name=, while checking for spaces on
+	// either side of the = just in case. Then we get every character that
+	// isn't a semicolon; this is the value of the cookie. After that we 
+	// match either a ; followed by more cookies (.*) or the end of the 
+	// string "$"
+	var cookie = cookiestring.replace(new RegExp("^.*"+cookieName+"\s*=\s*([^;]*)(;.*$|$)"),"$1");
+	// if they are the same, we didn't find it
+	return cookiestring == cookie? false : cookie;
 }
