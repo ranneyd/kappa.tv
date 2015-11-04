@@ -37,8 +37,8 @@ $("#chat-div").resizable({
 		changeChatValue("left", ui.position.left + "px");
 
 		// If they move but don't resize, they may be expecting that size
-		changeChatValue("width", ui.size.width + "px");
-		changeChatValue("height", ui.size.height + "px");
+		changeChatValue("width", $("#chat-div").width() + "px");
+		changeChatValue("height", u$("#chat-div").height() + "px");
 	}
 // Let's throw in a "make it completely opaque when hovered on" action
 }).hover(function(){
