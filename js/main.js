@@ -82,7 +82,7 @@ $("#chat-options input").keyup(function(){
 });
 
 $('#opacity').slider()
-	.on('slide', function(){
+	.on('change', function(){
 		changeChatValue("opacity", $("#opacity").slider("getValue"));
 	});
 
