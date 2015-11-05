@@ -130,6 +130,11 @@ $("#minimize").click(function(){
 $("#add-new input").change(function(){
 	var channel = $($("#add-new input")[0]).val();
 	$($("#add-new input")[0]).val("");
+	var channelparts = channel.split("/");
+	console.log(channelparts);
+	channel = channelparts[channelparts.length-1];
+	console.log(channelparts.length);
+	console.log(channel);
 	if(channel && channels.indexOf(channel) == -1){
 		// We don't want to add it if the channel doesn't exist
 		$.ajax({
