@@ -100,10 +100,17 @@ img.logo{
 	width:800px;
 }
 div.channel-thumb {
+	position:relative;
 	width:225px;
 	display:inline-block;
 	margin:0px 15px 25px 15px;
 	vertical-align: top;
+	-webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 div.channel-thumb h4{
 	text-align: center;
@@ -118,6 +125,14 @@ div.channel-thumb img{
 }
 div.channel-thumb > div.panel-body{
 	text-align: center;
+}
+div.channel-thumb span.delete{
+	position: absolute;
+	top:-10px;
+	right:0px;
+	color:red;
+	font-size:30px;
+	cursor:pointer;
 }
 #add-new button{
 	font-size:2em;
@@ -138,4 +153,10 @@ img.emote{
 }
 img.big-logo{
 	width:100%;
+}
+a.pointer{
+	cursor:pointer;
+}
+ul.dropdown-menu a{
+	cursor:pointer;
 }

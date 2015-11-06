@@ -86,22 +86,6 @@ $('#opacity').slider()
 		changeChatValue("opacity", $("#opacity").slider("getValue"));
 	});
 
-// // Big blue button in the options menu
-// $("#click-block-toggle").click(function(){
-// 	// Turn off blocker
-// 	if($(this).hasClass("btn-primary")){
-// 		$(this).removeClass("btn-primary")
-// 			.addClass("btn-default")
-// 			.html("Block me from accidentally clicking on the stream");
-// 		$(".block-click").hide();
-// 	}
-// 	else{
-// 		$(this).removeClass("btn-default")
-// 			.addClass("btn-primary")
-// 			.html("Let me click inside the stream");
-// 		$(".block-click").show();
-// 	}
-// });
 // roll up the chat window
 $("#minimize").click(function(){
 	var icon = $($(this).find("span")[0]);
@@ -131,10 +115,7 @@ $("#add-new input").change(function(){
 	var channel = $($("#add-new input")[0]).val();
 	$($("#add-new input")[0]).val("");
 	var channelparts = channel.split("/");
-	console.log(channelparts);
-	channel = channelparts[channelparts.length-1];
-	console.log(channelparts.length);
-	console.log(channel);
+	channel = channelparts[channelparts.length-1].toLowerCase();
 	if(channel && channels.indexOf(channel) == -1){
 		// We don't want to add it if the channel doesn't exist
 		$.ajax({
@@ -146,6 +127,40 @@ $("#add-new input").change(function(){
 				addChannel(channel);
 			}
 		});
+	}
+});
+var importFollows = function(){
+	var user = $("#import-input").val();
+	$.get("https://api.twitch.tv/kraken/users/"+user+"/follows/channels", function( data ){
+		// If the stream is offline, data.stream will be null
+		if(data.follows){
+			var follows = data.follows;
+
+			for(var i in follows){
+				if(channels.indexOf(follows[i].channel.name) == -1){
+					channels.push(follows[i].channel.name.toLowerCase());
+					addChannel(follows[i].channel.name);
+				}
+			}
+			document.cookie = "channels=" + channels.join("-");
+		}
+		else{
+			alert("User " + user + " not found");
+		}
+	});
+	$("#import-modal").modal("hide");
+}
+$("#import-submit").click(importFollows);
+$("#import-input").change(importFollows);
+
+$("#delete").click(function(){
+	if($(this).html() === "Delete"){
+		$(".delete").show();
+		$(this).html("Stop deleting");
+	}
+	else{
+		$(".delete").hide();
+		$(this).html("Delete");
 	}
 });
 
@@ -223,6 +238,21 @@ function addChannel(channel){
 		$.get("https://api.twitch.tv/kraken/streams/"+channel, function( data ){
 			// Make a channel thumbnail
 			var makeThumb = function(image, caption){
+				var click_function = function(){
+					var channel = $(this).parent().attr("data-channel");
+					// Set the channel name in all things that have this class
+					$(".channel-name").html(channel);
+					// set both iframes
+					$("#stream").attr("src", "http://player.twitch.tv/?channel="+channel);
+					$("#chat").attr("src", "http://www.twitch.tv/"+channel+"/chat");
+					// Set the global channel variable
+					global_channel = channel;
+
+					// Set the channel dimensions for this channel
+					setFromCookie(channel);
+					// Dismiss the modal
+					$("#channels").modal('hide');
+				};
 				// Make it the first one in the list after the new button
 				$("#add-new").after(
 					// Outer div
@@ -238,28 +268,28 @@ function addChannel(channel){
 							$("<div>")
 								.attr("class", "panel-body")
 								.html("<img class='img-thumbnail' src='"+image+"'>")
+								.click(click_function)
 						// We also need a footer/channel title
 						).append(
 							$("<div>")
 								.attr("class", "panel-footer")
 								.html("<h4 title='"+caption+"'>"+caption+ "</h4>")
+								.click(click_function)
 						// Load this channel
-						).click(function(){
-							var channel = $(this).attr("data-channel");
-							channel = channel.toLowerCase();
-							// Set the channel name in all things that have this class
-							$(".channel-name").html(channel);
-							// set both iframes
-							$("#stream").attr("src", "http://player.twitch.tv/?channel="+channel);
-							$("#chat").attr("src", "http://www.twitch.tv/"+channel+"/chat");
-							// Set the global channel variable
-							global_channel = channel;
-
-							// Set the channel dimensions for this channel
-							setFromCookie(channel);
-							// Dismiss the modal
-							$("#channels").modal('hide');
-						})
+						).append(
+							$("<span>")
+								.attr("class", "delete")
+								.html("&times;")
+								.click(function(){
+									var parent = $(this).parent();
+									var channelIndex = channels.indexOf(parent.attr("data-channel"));
+									if(channelIndex !== -1){
+										channels.splice(channelIndex, 1);
+										document.cookie = "channels=" + channels.join("-");
+									}
+									parent.remove();
+								}).hide()
+						)
 				);
 			}
 			if(data.stream){
@@ -267,7 +297,7 @@ function addChannel(channel){
 			}
 			else{
 				$.get("https://api.twitch.tv/kraken/channels/"+channel, function( data ){
-					makeThumb(data.logo, caption = channel + " (OFFLINE)")
+					makeThumb(data.logo? data.logo: "logo.png", caption = channel + " (OFFLINE)")
 				});
 			}
 		});

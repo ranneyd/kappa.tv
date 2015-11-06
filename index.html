@@ -199,7 +199,26 @@
                         aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title">Channels</h4>
+                <h4 class="modal-title">
+                    Channels
+                    <div class="dropdown" style="display:inline-block">
+                        <button class="btn btn-default dropdown-toggle"
+                                type="button"
+                                id="channel-settings"
+                                data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="true">  
+                            <span   class="glyphicon glyphicon-cog" 
+                                    aria-hidden="true"
+                                    title="Options"></span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="channel-settings">
+                            <li><a id="import-link" data-toggle="modal" data-target="#import-modal">Import</a></li>
+                            <li><a id="delete">Delete</a></li>
+                        </ul>
+                    </div>
+
+                </h4>
             </div>
             <div class="modal-body" id="channels-modal-body">
                 <div class="panel panel-default channel-thumb" id="add-new">
@@ -222,6 +241,16 @@
                         data-dismiss="modal">
                     Close
                 </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="import-link" id="import-modal">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body">
+                <p>Import followers from a twitch user</p>
+                <input type="text" id="import-input">&nbsp;<button class="btn btn-default" id="import-submit">Import</button>
             </div>
         </div>
     </div>
