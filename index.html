@@ -29,10 +29,10 @@
      chat window moves via JQuery UI's draggable and resizable, and those
      manipulate the element with inline styles anyway. So these are just the 
      default values. -->
-<div id="chat-div" style="  top:10%;
+<div id="chat-div" style="  top:0px;
                             left:0px;
-                            height:80%;
-                            width:400px;
+                            height:100%;
+                            width:350px;
                             opacity:0.7;">
     <!-- This is where the twitch chat lives. It has no source because it's
          set when the user selects a channel -->
@@ -40,40 +40,47 @@
     <!-- Controls at the top of the chat window -->
     <div id="controls">
         <nav class="navbar navbar-inverse">
-            <div class="container-fluid">
-                <!-- Once again, this <a> has no contents because they are set
-                     when the user selects a channel -->
-                <a  class="navbar-brand channel-name" 
-                    id="channel-info"
-                    data-toggle="modal"
-                    data-target="#info"></a>
-                <ul class="nav navbar-nav navbar-left">
-                    <li>
-                        <a data-toggle="modal" data-target="#options">
-                            <span   class="glyphicon glyphicon-cog" 
-                                    aria-hidden="true"
-                                    title="Options"></span>
-                        </a>
-                    </li>
-                    <li>
-                        <a  data-toggle="modal"
-                            data-target="#channels"
-                            id="channel-select">
-                            <span   class="glyphicon glyphicon-th" 
-                                    aria-hidden="true"
-                                    title="Channels"></span>
-                        </a>
-                    </li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li style="float:right">
-                        <a id="minimize">
-                            <span   class="glyphicon glyphicon-minus"
-                                    aria-hidden="true"></span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+            <ul class="nav navbar-nav navbar-left">
+                <li>
+                    <a data-toggle="modal" data-target="#info" id="channel-info">
+                        <span   class="glyphicon glyphicon-menu-hamburger" 
+                                aria-hidden="true"
+                                title="Channel Info"></span>
+                    </a>
+                </li>
+                <li>
+                    <a data-toggle="modal" data-target="#options">
+                        <span   class="glyphicon glyphicon-cog" 
+                                aria-hidden="true"
+                                title="Options"></span>
+                    </a>
+                </li>
+                <li>
+                    <a  data-toggle="modal"
+                        data-target="#channels"
+                        id="channel-select">
+                        <span   class="glyphicon glyphicon-th" 
+                                aria-hidden="true"
+                                title="Channels"></span>
+                    </a>
+                </li>
+                <li>
+                    <a  data-toggle="modal"
+                        data-target="#about">
+                        <span   class="glyphicon glyphicon-info-sign" 
+                                aria-hidden="true"
+                                title="About"></span>
+                    </a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li style="float:right; margin-right:15px">
+                    <a id="minimize">
+                        <span   class="glyphicon glyphicon-minus"
+                                aria-hidden="true"></span>
+                    </a>
+                </li>
+            </ul>
         </nav>
     </div>
     <!-- There are some problems with the iframe and the resize event where, if 
@@ -109,12 +116,6 @@
                 <p id="total-views">Total Views: <span></span></p>
                 <p id="followers">Followers: <span></span></p>
                 <a>Go to stream on twitch.tv</a>
-
-                <h2>About <img src="//static-cdn.jtvnw.net/emoticons/v1/25/1.0" title="Kappa" alt="Kappa" class="emote">.tv (Kappa.tv)</h2>
-                <div class="alert alert-success" role="alert"><strong>Protip:</strong> move and resize the chat window to your liking. Then go to the settings and change the opacity to a value between 0 and 1100% to represent how see-through you want the chat to be. These settings are channel-specific and will be preserved when you close the app or switch to a different channel.</div>
-                <p>Questions or concerns? <a href="mailto:ranneyd@kappa.tv">Let me know at ranneyd@kappa.tv!</a></p>
-                <p>All data is saved via cookies. Clearing your cookies will reset this application. It's highly recommended that you use the <a href="https://chrome.google.com/webstore/detail/betterttv/ajopnjidmegmdimjlfnijceegpefgped?hl=en">Better Twitch TV Chrome extension</a>; it tweeks the interface of the chat window and gives you the awesome BTTV emotes for maximum twitch meme value, like <a href="https://www.youtube.com/watch?v=qkUVToIfrKg" target="_blank"><img src="//cdn.betterttv.net/emote/54fb961b01abde735115de01/1x" title="KKona" alt="KKona" class="emote"></a> and <img src="//cdn.betterttv.net/emote/55678f9b7239dcf87b80d791/1x" title="FeelsGoodMan" alt="FeelsGoodMan" class="emote">.</p>
-                <p>If you like this, tell your friends. If you don't like it, <a href="https://github.com/ranneyd/kappa.tv">fork it on github and make it better</a>.</p>
             </div>
             <div class="modal-footer">
                 <button type="button" 
@@ -153,17 +154,17 @@
                     <input  type="text"
                             class="form-control"
                             id="width"
-                            value="400px">
+                            value="350px">
                     <label for="height">height</label>
                     <input  type="text" 
                             class="form-control"
                             id="height" 
-                            value="80%">
+                            value="100%">
                     <label for="top">top</label>
                     <input  type="text" 
                             class="form-control" 
                             id="top" 
-                            value="10%">
+                            value="0px">
                     <label for="left">left</label>
                     <input  type="text" 
                             class="form-control" 
@@ -234,6 +235,37 @@
                         <input type="text" placeholder="Channel Name">
                     </div>
                 </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" 
+                        class="btn btn-default" 
+                        data-dismiss="modal">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="about" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">
+                    About
+                </h4>
+            </div>
+            <div class="modal-body">
+                <h2>About <img src="//static-cdn.jtvnw.net/emoticons/v1/25/1.0" title="Kappa" alt="Kappa" class="emote">.tv (Kappa.tv)</h2>
+                <div class="alert alert-success" role="alert"><strong>Protip:</strong> move and resize the chat window to your liking. Then go to the settings and change the opacity to a value between 0 and 1100% to represent how see-through you want the chat to be. These settings are channel-specific and will be preserved when you close the app or switch to a different channel.</div>
+                <p>Questions or concerns? <a href="mailto:ranneyd@kappa.tv">Let me know at ranneyd@kappa.tv!</a></p>
+                <p>All data is saved via cookies. Clearing your cookies will reset this application. It's highly recommended that you use the <a href="https://chrome.google.com/webstore/detail/betterttv/ajopnjidmegmdimjlfnijceegpefgped?hl=en">Better Twitch TV Chrome extension</a>; it tweeks the interface of the chat window and gives you the awesome BTTV emotes for maximum twitch meme value, like <a href="https://www.youtube.com/watch?v=qkUVToIfrKg" target="_blank"><img src="//cdn.betterttv.net/emote/54fb961b01abde735115de01/1x" title="KKona" alt="KKona" class="emote"></a> and <img src="//cdn.betterttv.net/emote/55678f9b7239dcf87b80d791/1x" title="FeelsGoodMan" alt="FeelsGoodMan" class="emote">.</p>
+                <p>If you like this, tell your friends. If you don't like it, <a href="https://github.com/ranneyd/kappa.tv">fork it on github and make it better</a>.</p>
             </div>
             <div class="modal-footer">
                 <button type="button" 
