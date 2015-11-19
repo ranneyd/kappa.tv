@@ -78,6 +78,13 @@ nav a{
 	width:100%;
 	z-index: 300;
 }
+
+#info-title {
+	overflow: hidden;
+	text-overflow:ellipsis;
+	white-space: nowrap;
+}
+
 #chat-options input{
 	width:175px;
 	margin-right:25px;
