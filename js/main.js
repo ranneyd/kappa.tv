@@ -123,7 +123,7 @@ $("#add-new input").change(function(){
 			type:"get",
 			success: function(data){
 				channels.push(channel);
-				document.cookie = "channels=" + channels.join("-");
+				localStorage.setItem("channels",channels.join('-'));
 				addChannel(channel);
 			}
 		});
@@ -142,7 +142,7 @@ var importFollows = function(){
 					addChannel(follows[i].channel.name);
 				}
 			}
-			document.cookie = "channels=" + channels.join("-");
+			localStorage.setItem("channels",channels.join('-'));
 		}
 		else{
 			alert("User " + user + " not found");
@@ -185,16 +185,16 @@ function changeChatValue(type, val){
 			$("#chat-div").css("opacity", val);
 			break;
 	}
-	document.cookie = global_channel+type+"="+val;
+	localStorage.setItem(global_channel+type,val)
+
 }
 // Set chat window styles from cookies for "channel"
-function setFromCookie(channel){
-
-	var width = getCookie(channel+"width");
-	var height = getCookie(channel+"height");
-	var top = getCookie(channel+"top");
-	var left = getCookie(channel+"left");
-	var opacity = getCookie(channel+"opacity");
+function setFromLocalStorage(channel){
+	var width = localStorage.getItem(channel+"width");
+	var height = localStorage.getItem(channel+"height");
+	var top = localStorage.getItem(channel+"top");
+	var left = localStorage.getItem(channel+"left");
+	var opacity = localStorage.getItem(channel+"opacity");
 	if(width)
 		$("#chat-div").css("width", width);
 	if(height)
@@ -250,7 +250,7 @@ function addChannel(channel){
 					global_channel = channel;
 
 					// Set the channel dimensions for this channel
-					setFromCookie(channel);
+					setFromLocalStorage(channel);
 					// Dismiss the modal
 					$("#channels").modal('hide');
 				};
