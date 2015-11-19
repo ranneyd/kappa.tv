@@ -123,7 +123,7 @@ $("#add-new input").change(function(){
 			type:"get",
 			success: function(data){
 				channels.push(channel);
-				document.cookie = "channels=" + channels.join("-");
+				localStorage.setItem("channels",channels.join('-'));
 				addChannel(channel);
 			}
 		});
@@ -132,7 +132,7 @@ $("#add-new input").change(function(){
 var importFollows = function(){
 	var user = $("#import-input").val();
 	$.get("https://api.twitch.tv/kraken/users/"+user+"/follows/channels", function( data ){
-		// If the stream is offline, data.stream will be null
+		// If the user doesn't exist, data.follows will be null
 		if(data.follows){
 			var follows = data.follows;
 
@@ -142,7 +142,7 @@ var importFollows = function(){
 					addChannel(follows[i].channel.name);
 				}
 			}
-			document.cookie = "channels=" + channels.join("-");
+			localStorage.setItem("channels",channels.join('-'));
 		}
 		else{
 			alert("User " + user + " not found");
@@ -185,16 +185,16 @@ function changeChatValue(type, val){
 			$("#chat-div").css("opacity", val);
 			break;
 	}
-	document.cookie = global_channel+type+"="+val;
+	localStorage.setItem(global_channel+type,val)
+
 }
 // Set chat window styles from cookies for "channel"
-function setFromCookie(channel){
-
-	var width = getCookie(channel+"width");
-	var height = getCookie(channel+"height");
-	var top = getCookie(channel+"top");
-	var left = getCookie(channel+"left");
-	var opacity = getCookie(channel+"opacity");
+function setFromLocalStorage(channel){
+	var width = localStorage.getItem(channel+"width");
+	var height = localStorage.getItem(channel+"height");
+	var top = localStorage.getItem(channel+"top");
+	var left = localStorage.getItem(channel+"left");
+	var opacity = localStorage.getItem(channel+"opacity");
 	if(width)
 		$("#chat-div").css("width", width);
 	if(height)
@@ -222,7 +222,14 @@ function updateInfo(){
 	// Even if a stream is offline, this info is still available
 	$.get("https://api.twitch.tv/kraken/channels/"+global_channel, function( data ){
 		$("img.logo").attr("src", data.logo);
-		$("#info-title > span").html(global_channel);
+		var title = " Playing " + data.game;
+		$("#info-title > span").html(global_channel).attr({
+													'title': title,
+													'data-toggle': 'tooltip',
+													'data-placement': 'right'
+													}).tooltip('toggle');
+		// $("#info-title > span").html(<button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="right" title="...">...</button>)
+		// $("#info-title > span").tooltip('toggle');
 		$("#stream-title > span").html(data.status);
 		$("#total-views > span").html(data.views);
 		$("#followers > span").html(data.followers);
@@ -249,7 +256,7 @@ function addChannel(channel){
 					global_channel = channel;
 
 					// Set the channel dimensions for this channel
-					setFromCookie(channel);
+					setFromLocalStorage(channel);
 					// Dismiss the modal
 					$("#channels").modal('hide');
 				};
@@ -285,7 +292,7 @@ function addChannel(channel){
 									var channelIndex = channels.indexOf(parent.attr("data-channel"));
 									if(channelIndex !== -1){
 										channels.splice(channelIndex, 1);
-										document.cookie = "channels=" + channels.join("-");
+										localStorage.setItem("channels",channels.join('-'));
 									}
 									parent.remove();
 								}).hide()
@@ -307,11 +314,11 @@ function resetChannels(){
 	// Remove all the channel thumbnails, because they're probably all wrong
 	$(".actual-channel-thumb").remove();
 	// The channel cookie is of the form channels=channel1-channel2-channel3; 
-	var cookie = getCookie("channels");
+	var fullChannels = localStorage.getItem("channels");
 	// If we have a channel cookie set,
-	if(cookie){
+	if(fullChannels){
 		// This gives us an array of channels from the cookie
-		channels = cookie.split("-");
+		channels = fullChannels.split("-");
 		// Call our helper function for each one
 		for(var i in channels){
 			addChannel(channels[i]);
