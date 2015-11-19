@@ -132,7 +132,7 @@ $("#add-new input").change(function(){
 var importFollows = function(){
 	var user = $("#import-input").val();
 	$.get("https://api.twitch.tv/kraken/users/"+user+"/follows/channels", function( data ){
-		// If the stream is offline, data.stream will be null
+		// If the user doesn't exist, data.follows will be null
 		if(data.follows){
 			var follows = data.follows;
 
@@ -222,7 +222,8 @@ function updateInfo(){
 	// Even if a stream is offline, this info is still available
 	$.get("https://api.twitch.tv/kraken/channels/"+global_channel, function( data ){
 		$("img.logo").attr("src", data.logo);
-		$("#info-title > span").html(global_channel);
+		var title = global_channel + " playing " + data.game;
+		$("#info-title > span").html(title).attr('title', title);
 		$("#stream-title > span").html(data.status);
 		$("#total-views > span").html(data.views);
 		$("#followers > span").html(data.followers);
@@ -285,7 +286,7 @@ function addChannel(channel){
 									var channelIndex = channels.indexOf(parent.attr("data-channel"));
 									if(channelIndex !== -1){
 										channels.splice(channelIndex, 1);
-										document.cookie = "channels=" + channels.join("-");
+										localStorage.setItem("channels",channels.join('-'));
 									}
 									parent.remove();
 								}).hide()
@@ -307,11 +308,11 @@ function resetChannels(){
 	// Remove all the channel thumbnails, because they're probably all wrong
 	$(".actual-channel-thumb").remove();
 	// The channel cookie is of the form channels=channel1-channel2-channel3; 
-	var cookie = getCookie("channels");
+	var fullChannels = localStorage.getItem("channels");
 	// If we have a channel cookie set,
-	if(cookie){
+	if(fullChannels){
 		// This gives us an array of channels from the cookie
-		channels = cookie.split("-");
+		channels = fullChannels.split("-");
 		// Call our helper function for each one
 		for(var i in channels){
 			addChannel(channels[i]);
