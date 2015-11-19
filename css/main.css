@@ -62,6 +62,9 @@ html,body{
 #controls nav{
     border-radius: 0px;
 }
+.navbar-right > li{
+    margin-right:15px;
+}
 nav a{
     -webkit-touch-callout: none;
     -webkit-user-select: none;
