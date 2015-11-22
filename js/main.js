@@ -188,7 +188,7 @@ function changeChatValue(type, val){
 	localStorage.setItem(global_channel+type,val)
 
 }
-// Set chat window styles from cookies for "channel"
+// Set chat window styles from localStorage for "channel"
 function setFromLocalStorage(channel){
 	var width = localStorage.getItem(channel+"width");
 	var height = localStorage.getItem(channel+"height");
@@ -313,11 +313,11 @@ function addChannel(channel){
 function resetChannels(){
 	// Remove all the channel thumbnails, because they're probably all wrong
 	$(".actual-channel-thumb").remove();
-	// The channel cookie is of the form channels=channel1-channel2-channel3; 
+	// The channel localStorageObject holds all channels in a value of the form channels=channel1-channel2-channel3; 
 	var fullChannels = localStorage.getItem("channels");
-	// If we have a channel cookie set,
+	// If we have a channel in localStorage,
 	if(fullChannels){
-		// This gives us an array of channels from the cookie
+		// This gives us an array of channels from the localStorage
 		channels = fullChannels.split("-");
 		// Call our helper function for each one
 		for(var i in channels){
@@ -338,3 +338,4 @@ function getCookie(cookieName){
 	// if they are the same, we didn't find it
 	return cookiestring == cookie? false : cookie;
 }
+
