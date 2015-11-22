@@ -223,13 +223,12 @@ function updateInfo(){
 	$.get("https://api.twitch.tv/kraken/channels/"+global_channel, function( data ){
 		$("img.logo").attr("src", data.logo);
 		var title = " Playing " + data.game;
-		$("#info-title > span").html(global_channel).attr({
+		$("#info-title > span").html(global_channel + " is " + title ).attr({
 													'title': title,
 													'data-toggle': 'tooltip',
-													'data-placement': 'right'
+													'data-placement': 'bottom'
 													}).tooltip('toggle');
-		// $("#info-title > span").html(<button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="right" title="...">...</button>)
-		// $("#info-title > span").tooltip('toggle');
+		$("#info-title > span").tooltip('toggle');
 		$("#stream-title > span").html(data.status);
 		$("#total-views > span").html(data.views);
 		$("#followers > span").html(data.followers);
