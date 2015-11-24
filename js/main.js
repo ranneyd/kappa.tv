@@ -212,14 +212,13 @@ function updateInfo () {
     // Even if a stream is offline, this info is still available
     $.get("https://api.twitch.tv/kraken/channels/"+global_channel, function (data) {
         $("img.logo").attr("src", data.logo);
-        var title = " Playing " + data.game;
-        $("#info-title > span").html(global_channel).attr({
-                                                    'title': title,
-                                                    'data-toggle': 'tooltip',
-                                                    'data-placement': 'right'
-                                                    }).tooltip('toggle');
-        // $("#info-title > span").html(<button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="right" title="...">...</button>)
-        // $("#info-title > span").tooltip('toggle');
+        var title = global_channel + " Playing " + data.game;
+        $("#info-title > span").html(title);
+        $("#info-title").attr({
+            'data-title': title,
+            'data-toggle': 'tooltip',
+            'data-placement': 'bottom'
+        }).tooltip();
         $("#stream-title > span").html(data.status);
         $("#total-views > span").html(data.views);
         $("#followers > span").html(data.followers);
