@@ -1,0 +1,11 @@
+{
+	"extends": "eslint:recommended",
+	"rules": {	
+		"no-const-assign" : "off"
+	},
+	"env": {
+		"node": true,
+		"jquery": true,
+		"es6": true
+	}
+}
