@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/HunterEl/kappa.tv.git"
+    "url": "git+https://github.com/ranneyd/kappa.tv.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/HunterEl/kappa.tv/issues"
+    "url": "https://github.com/ranneyd/kappa.tv/issues"
   },
-  "homepage": "https://github.com/HunterEl/kappa.tv#readme",
+  "homepage": "https://github.com/ranneyd/kappa.tv#readme",
   "devDependencies": {
     "eslint": "^2.12.0",
     "gulp": "^3.9.1",
