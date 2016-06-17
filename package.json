@@ -1,0 +1,26 @@
+{
+  "name": "kappa.tv",
+  "version": "1.0.0",
+  "description": "",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HunterEl/kappa.tv.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HunterEl/kappa.tv/issues"
+  },
+  "homepage": "https://github.com/HunterEl/kappa.tv#readme",
+  "devDependencies": {
+    "eslint": "^2.12.0",
+    "gulp": "^3.9.1",
+    "gulp-eslint": "^2.0.0",
+    "gulp-less": "^3.1.0"
+  },
+  "dependencies": {}
+}
